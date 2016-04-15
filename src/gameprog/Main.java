@@ -3,11 +3,15 @@ package gameprog;
 import java.awt.*;
 import javax.swing.*;
 
+import java.io.File;
+import javax.imageio.ImageIO;
+
 public class Main {
     public static void main(String[] args){
         (new Main()).run(); // non-static
     }
     public JFrame fr;
+    public Image dman;
     public void run(){
         // ウィンドウ生成
         fr = new JFrame("タイトル");
@@ -21,6 +25,13 @@ public class Main {
         fr.setVisible(true);
         // サイズ調整
         fr.pack();
+        
+        try{
+            // このtryの中で画像を読み込む
+            dman = ImageIO.read(new File("src/d3.png"));
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         // 無限ループ
         while(true){
@@ -42,8 +53,9 @@ public class Main {
         Graphics2D g2 = (Graphics2D)fr.getContentPane().getGraphics();
         g2.setColor(Color.white);
         g2.fillRect(0,0,800,600);
-        g2.setColor(Color.black);
-        g2.fillRect(x,100,100,100);
+        int w = dman.getWidth(fr);
+        int h = dman.getHeight(fr);
+        g2.drawImage(dman,x,0,w,h,fr);
         x += 3;
     }
 }
