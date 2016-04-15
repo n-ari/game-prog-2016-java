@@ -25,7 +25,6 @@ public class Main {
         // 無限ループ
         while(true){
             long beg = System.nanoTime();
-            // ここがメインの処理！
             move();
             // 60FPS用
             long range = System.nanoTime() - beg;
@@ -39,7 +38,25 @@ public class Main {
         }
     }
     public void move(){
-        // ここでいろいろやる
-        System.out.println("Hello, GUI World!");
+        Graphics2D g2 = (Graphics2D)fr.getContentPane().getGraphics();
+        g2.setColor(Color.black);
+        g2.fillRect(100,100,100,100);
+        g2.setColor(Color.red);
+        g2.fillOval(200,100,100,100);
+        g2.setColor(Color.blue);
+        g2.fillOval(300,100,200,100);
+
+        g2.setColor(Color.black);
+        g2.drawRect(100,300,100,100);
+        g2.setColor(Color.red);
+        g2.drawOval(200,300,100,100);
+        g2.setColor(Color.blue);
+        g2.drawOval(300,300,200,100);
+
+        g2.setColor(new Color(255,127,127));
+        g2.fillRect(20,20,100,1);
+        g2.setColor(Color.red);
+        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+        g2.drawString("Hello, World",20,20);
     }
 }
