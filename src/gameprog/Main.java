@@ -145,9 +145,18 @@ public class Main {
 	        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
 	        g2.setColor(Color.black);
 	        g2.drawString(String.format("%.4f秒",sec),0,25);
-	        
-            // 今のところ便宜的にXキーを押すとゲームオーバーとする
-            if(onPressed(KeyEvent.VK_X)){
+
+            // 当たったらゲームオーバー
+            // D言語くんの中心座標・当たり判定半径
+            int cx = x + w/2;
+            int cy = y + h/2;
+            int cr = 10;
+            // check
+            float dx = (cx - bx);
+            float dy = (cy - by);
+            float dr = (cr + br);
+            if(dx*dx + dy*dy <= dr*dr){
+                // ゲームオーバーに移行
                 state = 2;
             }
         }else if(state == 2){
