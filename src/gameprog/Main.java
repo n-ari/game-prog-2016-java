@@ -10,6 +10,8 @@ import java.awt.image.BufferedImage;
 
 import java.awt.event.*;
 
+import java.util.ArrayList;
+
 public class Main {
     public static void main(String[] args){
         (new Main()).run(); // non-static
@@ -74,8 +76,7 @@ public class Main {
         }
     }
     public int x = 400,y = 300;
-    public float bx = 0, by = 100;
-    public float bvx = 3, bvy = 1;
+    public ArrayList<Float> bxList, byList, bvxList, bvyList;
     public int br = 5;
     public int time = 0;
     // state 0:Title 1:Game 2:Result
@@ -95,10 +96,10 @@ public class Main {
                 // 初期化
                 x = 400;
                 y = 300;
-                bx = 0;
-                by = 100;
-                bvx = 3;
-                bvy = 1;
+                bxList = new ArrayList<>();
+                byList = new ArrayList<>();
+                bvxList = new ArrayList<>();
+                bvyList = new ArrayList<>();
                 time = 0;
             }
         }else if(state == 1){
@@ -123,22 +124,38 @@ public class Main {
 	        if(y>600-h) y = 600-h;
 	        if(y<0) y = 0;
 	        g2.drawImage(dman,x,y,w,h,fr);
+	        
+            if(time%60==0){
+                bxList.add(0f);
+                byList.add(100f);
+                bvxList.add(3f);
+                bvyList.add(1f);
+            }
 
-            bx += bvx;
-            by += bvy;
-            // 完全に画面外に出たらループさせる
-            if(bx <= 0-br){
-                bx = 800+br;
-            }else if(bx >= 800+br){
-                bx = 0-br;
+            for(int i=0;i<bxList.size();i++){
+                float bx,by,bvx,bvy;
+                bx = bxList.get(i);
+                by = byList.get(i);
+                bvx = bvxList.get(i);
+                bvy = bvyList.get(i);
+                bx += bvx;
+                by += bvy;
+                // 完全に画面外に出たらループさせる
+                if(bx <= 0-br){
+                    bx = 800+br;
+                }else if(bx >= 800+br){
+                    bx = 0-br;
+                }
+                if(by <= 0-br){
+                    by = 600+br;
+                }else if(by >= 600+br){
+                    by = 0-br;
+                }
+                bxList.set(i,bx);
+                byList.set(i,by);
+                g2.setColor(Color.blue);
+                g2.fillOval((int)(bx-br),(int)(by-br),2*br,2*br);
             }
-            if(by <= 0-br){
-                by = 600+br;
-            }else if(by >= 600+br){
-                by = 0-br;
-            }
-            g2.setColor(Color.blue);
-            g2.fillOval((int)(bx-br),(int)(by-br),2*br,2*br);
             
 	        time ++;
 	        float sec = (float)time/60f;
@@ -152,12 +169,18 @@ public class Main {
             int cy = y + h/2;
             int cr = 10;
             // check
-            float dx = (cx - bx);
-            float dy = (cy - by);
-            float dr = (cr + br);
-            if(dx*dx + dy*dy <= dr*dr){
-                // ゲームオーバーに移行
-                state = 2;
+            for(int i=0;i<bxList.size();++i){
+                float bx,by;
+                bx = bxList.get(i);
+                by = byList.get(i);
+                float dx = (cx - bx);
+                float dy = (cy - by);
+                float dr = (cr + br);
+                if(dx*dx + dy*dy <= dr*dr){
+                    // ゲームオーバーに移行
+                    state = 2;
+                    break;
+                }
             }
         }else if(state == 2){
             g2.setColor(Color.black);
