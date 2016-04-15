@@ -40,6 +40,8 @@ public class Main {
     public int x = 0;
     public void move(){
         Graphics2D g2 = (Graphics2D)fr.getContentPane().getGraphics();
+        g2.setColor(Color.white);
+        g2.fillRect(0,0,800,600);
         g2.setColor(Color.black);
         g2.fillRect(x,100,100,100);
         x += 3;
