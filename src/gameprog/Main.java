@@ -125,11 +125,17 @@ public class Main {
 	        if(y<0) y = 0;
 	        g2.drawImage(dman,x,y,w,h,fr);
 	        
-            if(time%60==0){
-                bxList.add(0f);
-                byList.add(100f);
-                bvxList.add(3f);
-                bvyList.add(1f);
+	        if(time%60==0){
+                // [0,1) の範囲の乱数を2π倍して [0,2π) の範囲の乱数にする
+                float angle = (float)Math.random() * (float)Math.PI * 2f;
+                // [0,1) の範囲を4倍して3足すことで [3,7) の範囲の乱数にする
+                float len = (float)Math.random() * 4f + 3f;
+                float vx = (float)Math.cos(angle) * len;
+                float vy = (float)Math.sin(angle) * len;
+                bxList.add(400f);
+                byList.add(0f);
+                bvxList.add(vx);
+                bvyList.add(vy);
             }
 
             for(int i=0;i<bxList.size();i++){
