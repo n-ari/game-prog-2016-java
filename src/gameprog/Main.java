@@ -73,17 +73,30 @@ public class Main {
             }
         }
     }
-    public int x = 0;
+    public int x = 400,y = 300;
     public void move(){
         Graphics2D g2 = (Graphics2D)buf.getGraphics();
-        if(isPressed(KeyEvent.VK_Z)){
-        	x += 3;
-        }else if(isPressed(KeyEvent.VK_X)){
-        	x -= 3;
+        int v = 6;
+        int w = dman.getWidth(fr)/4;
+        int h = dman.getHeight(fr)/4;
+        if(isPressed(KeyEvent.VK_RIGHT)){
+            x += v;
         }
-        int w = dman.getWidth(fr);
-        int h = dman.getHeight(fr);
-        g2.drawImage(dman,x,0,w,h,fr);
+        if(isPressed(KeyEvent.VK_LEFT)){
+            x -= v;
+        }
+        if(isPressed(KeyEvent.VK_DOWN)){
+            y += v;
+        }
+        if(isPressed(KeyEvent.VK_UP)){
+            y -= v;
+        }
+        // 画面外に出さない
+        if(x>800-w) x = 800-w;
+        if(x<0) x = 0;
+        if(y>600-h) y = 600-h;
+        if(y<0) y = 0;
+        g2.drawImage(dman,x,y,w,h,fr);
     }
     public boolean isPressed(int key){
         return keynow[key];
