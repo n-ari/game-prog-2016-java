@@ -75,35 +75,76 @@ public class Main {
     }
     public int x = 400,y = 300;
     public int time = 0;
+    // state 0:Title 1:Game 2:Result
+    public int state = 0;
     public void move(){
         Graphics2D g2 = (Graphics2D)buf.getGraphics();
-        int v = 6;
-        int w = dman.getWidth(fr)/4;
-        int h = dman.getHeight(fr)/4;
-        if(isPressed(KeyEvent.VK_RIGHT)){
-            x += v;
-        }
-        if(isPressed(KeyEvent.VK_LEFT)){
-            x -= v;
-        }
-        if(isPressed(KeyEvent.VK_DOWN)){
-            y += v;
-        }
-        if(isPressed(KeyEvent.VK_UP)){
-            y -= v;
-        }
-        // 画面外に出さない
-        if(x>800-w) x = 800-w;
-        if(x<0) x = 0;
-        if(y>600-h) y = 600-h;
-        if(y<0) y = 0;
-        g2.drawImage(dman,x,y,w,h,fr);
+        if(state==0){
+            g2.setColor(Color.black);
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN, 48));
+            g2.drawString("ゲーム入門制作",30,100);
 
-        time ++;
-        float sec = (float)time/60f;
-        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
-        g2.setColor(Color.black);
-        g2.drawString(String.format("%.4f秒",sec),0,25);
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+            g2.drawString("Zキーを押してスタート",400,400);
+
+            if(onPressed(KeyEvent.VK_Z)){
+                state = 1;
+                // 初期化
+                x = 400;
+                y = 300;
+                time = 0;
+            }
+        }else if(state == 1){
+	        int v = 6;
+	        int w = dman.getWidth(fr)/4;
+	        int h = dman.getHeight(fr)/4;
+	        if(isPressed(KeyEvent.VK_RIGHT)){
+	            x += v;
+	        }
+	        if(isPressed(KeyEvent.VK_LEFT)){
+	            x -= v;
+	        }
+	        if(isPressed(KeyEvent.VK_DOWN)){
+	            y += v;
+	        }
+	        if(isPressed(KeyEvent.VK_UP)){
+	            y -= v;
+	        }
+	        // 画面外に出さない
+	        if(x>800-w) x = 800-w;
+	        if(x<0) x = 0;
+	        if(y>600-h) y = 600-h;
+	        if(y<0) y = 0;
+	        g2.drawImage(dman,x,y,w,h,fr);
+	
+	        time ++;
+	        float sec = (float)time/60f;
+	        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+	        g2.setColor(Color.black);
+	        g2.drawString(String.format("%.4f秒",sec),0,25);
+	        
+            // 今のところ便宜的にXキーを押すとゲームオーバーとする
+            if(onPressed(KeyEvent.VK_X)){
+                state = 2;
+            }
+        }else if(state == 2){
+            g2.setColor(Color.black);
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN, 32));
+            g2.drawString("ゲームオーバー",30,100);
+
+            float sec = (float)time/60f;
+            g2.setColor(Color.red);
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN, 48));
+            g2.drawString(String.format("スコア : %.5f 秒",sec),100,200);
+
+            g2.setColor(Color.black);
+            g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+            g2.drawString("Zキーでコンティニュー",400,500);
+
+            if(onPressed(KeyEvent.VK_Z)){
+                state = 0;
+            }
+        }
     }
     public boolean isPressed(int key){
         return keynow[key];
