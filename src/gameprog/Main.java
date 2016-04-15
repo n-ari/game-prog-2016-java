@@ -74,6 +74,7 @@ public class Main {
         }
     }
     public int x = 400,y = 300;
+    public int time = 0;
     public void move(){
         Graphics2D g2 = (Graphics2D)buf.getGraphics();
         int v = 6;
@@ -97,6 +98,12 @@ public class Main {
         if(y>600-h) y = 600-h;
         if(y<0) y = 0;
         g2.drawImage(dman,x,y,w,h,fr);
+
+        time ++;
+        float sec = (float)time/60f;
+        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
+        g2.setColor(Color.black);
+        g2.drawString(String.format("%.4f秒",sec),0,25);
     }
     public boolean isPressed(int key){
         return keynow[key];
