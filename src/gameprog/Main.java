@@ -74,6 +74,9 @@ public class Main {
         }
     }
     public int x = 400,y = 300;
+    public float bx = 0, by = 100;
+    public float bvx = 3, bvy = 1;
+    public int br = 5;
     public int time = 0;
     // state 0:Title 1:Game 2:Result
     public int state = 0;
@@ -92,6 +95,10 @@ public class Main {
                 // 初期化
                 x = 400;
                 y = 300;
+                bx = 0;
+                by = 100;
+                bvx = 3;
+                bvy = 1;
                 time = 0;
             }
         }else if(state == 1){
@@ -116,7 +123,23 @@ public class Main {
 	        if(y>600-h) y = 600-h;
 	        if(y<0) y = 0;
 	        g2.drawImage(dman,x,y,w,h,fr);
-	
+
+            bx += bvx;
+            by += bvy;
+            // 完全に画面外に出たらループさせる
+            if(bx <= 0-br){
+                bx = 800+br;
+            }else if(bx >= 800+br){
+                bx = 0-br;
+            }
+            if(by <= 0-br){
+                by = 600+br;
+            }else if(by >= 600+br){
+                by = 0-br;
+            }
+            g2.setColor(Color.blue);
+            g2.fillOval((int)(bx-br),(int)(by-br),2*br,2*br);
+            
 	        time ++;
 	        float sec = (float)time/60f;
 	        g2.setFont(new Font(Font.SERIF, Font.PLAIN, 24));
